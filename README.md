@@ -66,6 +66,7 @@ The roadmap maps missing skills to available courses from `skill_courses`.
 ---
 
 ## What it does
+The platform connects institutional placement insights with individual student readiness, enabling data-driven decisions and personalized skill development.
 
 ### PLO Module
 
