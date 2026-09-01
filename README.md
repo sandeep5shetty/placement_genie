@@ -126,4 +126,4 @@ Copy `.env.example` to `.env.local` and fill in:
 ```bash
 pnpm install
 pnpm db:migrate
-pnpm dev
+pnpm dev   
