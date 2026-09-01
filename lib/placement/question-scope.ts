@@ -1,8 +1,3 @@
-import { generateObject } from "ai";
-import { z } from "zod";
-import { titleModel } from "@/lib/ai/models";
-import { getLanguageModel } from "@/lib/ai/providers";
-
 export const CAMPUS_COMPANY_PATTERN =
   /\b(google|microsoft|amazon|meta|netflix|apple|databricks|uber|linkedin|adobe|salesforce|oracle|ibm|infosys|tcs|wipro|accenture|honeywell|cognizant|capgemini|flipkart|phonepe|intuit)\b/i;
 
@@ -34,11 +29,6 @@ const OUT_OF_SCOPE_REPLY =
 
 const GREETING_REPLY =
   "I’m the Placement Readiness Genie. Ask whether you match a campus company and role, what skills you’re missing, or what to study next.";
-
-const evaluationSchema = z.object({
-  inScope: z.boolean(),
-  reply: z.string().max(400),
-});
 
 export function classifyPlacementQuestion(question: string): QuestionScope {
   const trimmed = question.trim();
@@ -80,38 +70,12 @@ function scopedReply(
   return { reply: "", scope };
 }
 
-export async function evaluatePlacementQuestion(
+export function evaluatePlacementQuestion(
   question: string
-): Promise<QuestionEvaluation> {
+): QuestionEvaluation {
   const classified = classifyPlacementQuestion(question);
-  if (classified !== "uncertain") {
-    return scopedReply(classified);
-  }
-
-  try {
-    const { object } = await generateObject({
-      model: getLanguageModel(titleModel.id),
-      prompt: `You gate questions for a campus placement chatbot.
-
-IN SCOPE only if the student is asking about campus-visiting companies/roles, CGPA vs cutoff, required or missing skills, internships from the placement season, or a study roadmap for those roles.
-
-OUT OF SCOPE: unrelated careers, general knowledge, jokes, homework, news, or anything not answerable from campus placement tables.
-
-Question: ${question.slice(0, 800)}
-
-If out of scope, write a short reply that refuses and points the student back to campus company/role questions. If in scope, set reply to "".`,
-      schema: evaluationSchema,
-    });
-
-    if (object.inScope) {
-      return { reply: "", scope: "in_scope" };
-    }
-
-    return {
-      reply: object.reply.trim() || OUT_OF_SCOPE_REPLY,
-      scope: "out_of_scope",
-    };
-  } catch {
+  if (classified === "uncertain") {
     return scopedReply("out_of_scope");
   }
+  return scopedReply(classified);
 }

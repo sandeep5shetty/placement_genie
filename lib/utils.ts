@@ -9,6 +9,19 @@ import type { DBMessage, Document } from '@/lib/db/schema';
 import { ChatbotError, type ErrorCode } from './errors';
 import type { ChatMessage, ChatTools, CustomUIDataTypes } from './types';
 
+function chatbotErrorFromResponse(payload: unknown) {
+  if (payload && typeof payload === "object" && "code" in payload) {
+    const code = String((payload as { code?: string }).code ?? "");
+    if (code.includes(":")) {
+      return new ChatbotError(
+        code as ErrorCode,
+        "cause" in payload ? String((payload as { cause?: string }).cause) : undefined
+      );
+    }
+  }
+  return new ChatbotError("bad_request:api");
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -17,8 +30,13 @@ export const fetcher = async (url: string) => {
   const response = await fetch(url);
 
   if (!response.ok) {
-    const { code, cause } = await response.json();
-    throw new ChatbotError(code as ErrorCode, cause);
+    let payload: unknown;
+    try {
+      payload = await response.json();
+    } catch {
+      throw new ChatbotError("bad_request:api");
+    }
+    throw chatbotErrorFromResponse(payload);
   }
 
   return response.json();
@@ -26,20 +44,25 @@ export const fetcher = async (url: string) => {
 
 export async function fetchWithErrorHandlers(
   input: RequestInfo | URL,
-  init?: RequestInit,
+  init?: RequestInit
 ) {
   try {
     const response = await fetch(input, init);
 
     if (!response.ok) {
-      const { code, cause } = await response.json();
-      throw new ChatbotError(code as ErrorCode, cause);
+      let payload: unknown;
+      try {
+        payload = await response.json();
+      } catch {
+        throw new ChatbotError("bad_request:api");
+      }
+      throw chatbotErrorFromResponse(payload);
     }
 
     return response;
   } catch (error: unknown) {
-    if (typeof navigator !== 'undefined' && !navigator.onLine) {
-      throw new ChatbotError('offline:chat');
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      throw new ChatbotError("offline:chat");
     }
 
     throw error;

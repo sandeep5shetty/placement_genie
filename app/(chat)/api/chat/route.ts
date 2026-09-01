@@ -95,11 +95,11 @@ export async function POST(request: Request) {
       auth(),
     ]);
 
-    if (botIdResult?.isBot) {
+    if (botIdResult?.isBot && process.env.BOTID_ENFORCE === "1") {
       return new ChatbotError("forbidden:api").toResponse();
     }
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
       return new ChatbotError("unauthorized:chat").toResponse();
     }
 
@@ -107,9 +107,20 @@ export async function POST(request: Request) {
       ? selectedChatModel
       : DEFAULT_CHAT_MODEL;
 
-    await checkIpRateLimit(ipAddress(request));
+    try {
+      await checkIpRateLimit(ipAddress(request));
+    } catch (error) {
+      if (error instanceof ChatbotError) {
+        throw error;
+      }
+    }
 
-    const userType: UserType = session.user.type;
+    const userType: UserType =
+      session.user.type === "regular" ||
+      session.user.type === "placement_cell" ||
+      session.user.type === "guest"
+        ? session.user.type
+        : "guest";
 
     const messageCount = await getMessageCountByUserId({
       differenceInHours: 1,
@@ -177,14 +188,23 @@ export async function POST(request: Request) {
       ];
     }
 
-    const { longitude, latitude, city, country } = geolocation(request);
-
-    const requestHints: RequestHints = {
-      city,
-      country,
-      latitude,
-      longitude,
+    let requestHints: RequestHints = {
+      city: undefined,
+      country: undefined,
+      latitude: undefined,
+      longitude: undefined,
     };
+    try {
+      const { longitude, latitude, city, country } = geolocation(request);
+      requestHints = {
+        city,
+        country,
+        latitude,
+        longitude,
+      };
+    } catch {
+      /* geolocation is optional */
+    }
 
     if (message?.role === "user") {
       await saveMessages({
@@ -428,7 +448,10 @@ export async function POST(request: Request) {
     }
 
     console.error("Unhandled error in chat API:", error, { vercelId });
-    return new ChatbotError("offline:chat").toResponse();
+    return new ChatbotError(
+      "bad_request:api",
+      error instanceof Error ? error.message : undefined
+    ).toResponse();
   }
 }
 
