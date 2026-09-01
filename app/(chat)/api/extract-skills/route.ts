@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/app/(auth)/auth";
+import { profileHasDetails } from "@/lib/placement/extract-heuristic";
 import { extractProfileFromResumeText } from "@/lib/placement/extract-skills";
 import {
   extractResumeText,
   isSupportedResumeFile,
 } from "@/lib/placement/parse-resume";
+
+function errorMessage(error: unknown) {
+  if (error instanceof Error && error.message.trim()) {
+    return error.message;
+  }
+  return "Failed to extract the profile from the resume.";
+}
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -42,25 +50,28 @@ export async function POST(request: Request) {
 
     if (!text) {
       return NextResponse.json(
-        { error: "Could not read any text from that resume." },
+        {
+          error:
+            "Could not read text from that PDF. If it is a scanned image, export it as a text PDF or DOCX.",
+        },
         { status: 400 }
       );
     }
 
     const profile = await extractProfileFromResumeText(text);
 
-    if (profile.skills.length === 0 && !profile.cgpa && !profile.name) {
+    if (!profileHasDetails(profile)) {
       return NextResponse.json(
-        { error: "No profile details were found. Fill them in and continue." },
+        {
+          error:
+            "Read the file but found no USN, name, CGPA, or skills. Fill the profile fields manually.",
+        },
         { status: 422 }
       );
     }
 
     return NextResponse.json(profile);
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to extract the profile from the resume." },
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({ error: errorMessage(error) }, { status: 500 });
   }
 }

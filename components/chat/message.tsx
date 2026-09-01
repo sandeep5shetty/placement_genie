@@ -1,8 +1,9 @@
 "use client";
 import type { UseChatHelpers } from "@ai-sdk/react";
 import { useCallback } from "react";
+import { GenieTables } from "@/components/placement/genie-tables";
 import { ReadinessScore } from "@/components/placement/readiness-score";
-import { RoadmapCards } from "@/components/placement/roadmap-cards";
+import { RoadmapOffer } from "@/components/placement/roadmap-offer";
 import type { Vote } from "@/lib/db/schema";
 import type { ChatMessage } from "@/lib/types";
 import { cn, sanitizeText } from "@/lib/utils";
@@ -123,7 +124,8 @@ const PurePreviewMessage = ({
         part.text?.trim().length > 0) ||
       part.type.startsWith("tool-") ||
       part.type === "data-readiness" ||
-      part.type === "data-roadmap"
+      part.type === "data-roadmap" ||
+      part.type === "data-genie-tables"
   );
   const isThinking = isAssistant && isLoading && !hasAnyContent;
 
@@ -346,8 +348,12 @@ const PurePreviewMessage = ({
       return <ReadinessScore key={key} {...part.data} />;
     }
 
+    if (type === "data-genie-tables") {
+      return <GenieTables key={key} tables={part.data.tables} />;
+    }
+
     if (type === "data-roadmap") {
-      return <RoadmapCards key={key} {...part.data} />;
+      return <RoadmapOffer key={key} {...part.data} />;
     }
 
     return null;

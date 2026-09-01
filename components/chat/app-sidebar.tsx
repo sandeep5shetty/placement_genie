@@ -20,6 +20,7 @@ import {
 } from "@/components/chat/sidebar-history";
 import { SidebarUserNav } from "@/components/chat/sidebar-user-nav";
 import { usePlacement } from "@/components/placement/placement-provider";
+import { SidebarRoadmaps } from "@/components/placement/sidebar-roadmaps";
 import {
   Sidebar,
   SidebarContent,
@@ -167,6 +168,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
           <SidebarHistory user={user} />
         </SidebarContent>
         <SidebarFooter className="border-t border-sidebar-border pt-2 pb-3">
+          <SidebarRoadmaps />
           {user ? <SidebarUserNav user={user} /> : null}
         </SidebarFooter>
         <SidebarRail />

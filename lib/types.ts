@@ -6,7 +6,11 @@ import type { getWeather } from "./ai/tools/get-weather";
 import type { requestSuggestions } from "./ai/tools/request-suggestions";
 import type { updateDocument } from "./ai/tools/update-document";
 import type { Suggestion } from "./db/schema";
-import type { ReadinessData, RoadmapData } from "./placement/types";
+import type {
+  GenieTablesData,
+  ReadinessData,
+  RoadmapData,
+} from "./placement/types";
 
 export const messageMetadataSchema = z.object({
   createdAt: z.string(),
@@ -51,6 +55,7 @@ export type CustomUIDataTypes = {
   "waiting-status": WaitingStatusData;
   readiness: ReadinessData;
   roadmap: RoadmapData;
+  "genie-tables": GenieTablesData;
 };
 
 export type ChatMessage = UIMessage<

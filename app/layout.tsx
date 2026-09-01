@@ -9,6 +9,12 @@ import { SessionProvider } from "next-auth/react";
 export const metadata: Metadata = {
   description:
     "Ask if you are ready for a campus role, then get a plan for the skill gaps.",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL ??
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : "http://localhost:3000")
+  ),
   title: "Placement Readiness Genie",
 };
 

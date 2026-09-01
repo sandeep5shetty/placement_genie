@@ -15,7 +15,7 @@ The chat UI is Next.js + AI SDK. Placement answers are meant to come from a **Da
 
 - Next.js App Router, Auth.js, Neon Postgres (chat history)
 - OpenAI via `@ai-sdk/openai` for resume extraction and fallback chat
-- Databricks Genie + Delta tables for readiness queries (wire `lib/placement/genie.ts` to your Genie API)
+- Databricks Genie Agent (Conversation API) when `DATABRICKS_*` env vars are set; otherwise a local stub
 - Roadmap from `skill_courses` (`lib/placement/roadmap.ts`)
 
 ## Run locally
@@ -29,6 +29,9 @@ Copy `.env.example` to `.env.local` and fill in:
 | `POSTGRES_URL` | Neon (or other) Postgres connection string |
 | `BLOB_READ_WRITE_TOKEN` | Optional — file uploads |
 | `REDIS_URL` | Optional — rate limiting |
+| `DATABRICKS_HOST` | Workspace URL, no trailing slash |
+| `DATABRICKS_TOKEN` | PAT or service principal token |
+| `DATABRICKS_GENIE_AGENT_ID` | Genie Agent ID from the agent URL |
 
 ```bash
 pnpm install

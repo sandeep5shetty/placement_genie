@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { usePlacement } from "./placement-provider";
 
 export function ProfileHeaderButton() {
-  const { name, cgpa, setProfileOpen, skills } = usePlacement();
+  const { name, cgpa, setProfileOpen, skills, usn } = usePlacement();
   const handleOpen = useCallback(() => {
     setProfileOpen(true);
   }, [setProfileOpen]);
 
   const summary = name.trim() || "Profile";
   const meta = [
+    usn ? usn : null,
     cgpa ? `CGPA ${cgpa}` : null,
     skills.length > 0 ? `${skills.length} skills` : null,
   ]

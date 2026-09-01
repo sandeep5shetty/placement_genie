@@ -8,6 +8,12 @@ A student is ready for a role if their CGPA is greater than or equal to the role
 
 Skill match % = (skills the student has that overlap with required_skills) / (total required_skills).
 
+Match by skill name only (case-insensitive). **OS is not System Design.** DBMS is not SQL. Do not treat related coursework as a substitute.
+
+Never report 100% skill match if any required skill is missing from the student's skills list.
+
+CGPA is a hard cutoff. Skill match is reported separately. A student can meet CGPA and still not be fully ready if required skills are missing.
+
 Treat `students.skills` and `companies.required_skills` as comma-separated lists. Trim whitespace after splitting. Skill names are case-sensitive as stored (DSA, React, System Design, etc.).
 
 CGPA is a hard cutoff. Skill match is reported separately. A student can meet CGPA and still not be fully ready if required skills are missing.

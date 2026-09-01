@@ -128,8 +128,10 @@ export function ProfileSheet() {
     setResumeName,
     setSkills,
     setTargetRole,
+    setUsn,
     skills,
     targetRole,
+    usn,
   } = usePlacement();
 
   const handlePickFile = useCallback(() => {
@@ -170,9 +172,13 @@ export function ProfileSheet() {
         applyProfile(payload);
         setResumeName(file.name);
         toast({
-          description: payload.cgpa
-            ? `Profile updated, including CGPA ${payload.cgpa}.`
-            : "Profile updated from your resume.",
+          description:
+            [
+              payload.usn ? `USN ${payload.usn}` : null,
+              payload.cgpa ? `CGPA ${payload.cgpa}` : null,
+            ]
+              .filter(Boolean)
+              .join(" · ") || "Profile updated from your resume.",
           type: "success",
         });
       } catch {
@@ -283,7 +289,7 @@ export function ProfileSheet() {
             </span>
             <span className="text-[12px] text-muted-foreground">
               {resumeName ??
-                "PDF or DOCX. We extract name, CGPA, college, and skills."}
+                "PDF or DOCX. We extract USN, name, CGPA, college, and skills."}
             </span>
           </button>
 
@@ -300,15 +306,14 @@ export function ProfileSheet() {
                 value={name}
               />
             </div>
-            <div className="flex flex-col gap-1.5 sm:col-span-2">
-              <Label htmlFor="profile-email">Email</Label>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="profile-usn">USN</Label>
               <ProfileInput
                 className="rounded-lg"
-                id="profile-email"
-                onValueChange={setEmail}
-                placeholder="alex@college.edu"
-                type="email"
-                value={email}
+                id="profile-usn"
+                onValueChange={setUsn}
+                placeholder="1BM25MC042"
+                value={usn}
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -320,6 +325,17 @@ export function ProfileSheet() {
                 onValueChange={setCgpa}
                 placeholder="8.72"
                 value={cgpa}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5 sm:col-span-2">
+              <Label htmlFor="profile-email">Email</Label>
+              <ProfileInput
+                className="rounded-lg"
+                id="profile-email"
+                onValueChange={setEmail}
+                placeholder="alex@college.edu"
+                type="email"
+                value={email}
               />
             </div>
             <div className="flex flex-col gap-1.5">

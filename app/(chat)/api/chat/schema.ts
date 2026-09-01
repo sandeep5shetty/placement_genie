@@ -39,8 +39,23 @@ export const postRequestBodySchema = z.object({
       degree: z.string().max(80).optional(),
       email: z.string().max(120).optional(),
       name: z.string().max(80).optional(),
+      roadmapProgress: z
+        .array(
+          z.object({
+            company: z.string().max(80).optional(),
+            key: z.string().max(120),
+            role: z.string().max(80).optional(),
+            skills: z.record(
+              z.string().max(40),
+              z.enum(["not_started", "in_progress", "completed"])
+            ),
+          })
+        )
+        .max(20)
+        .optional(),
       skills: z.array(z.string().min(1).max(40)).max(40),
       targetRole: z.string().max(80).optional(),
+      usn: z.string().max(20).optional(),
     })
     .optional(),
 });

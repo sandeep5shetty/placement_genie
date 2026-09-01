@@ -3,12 +3,11 @@ import Script from "next/script";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 import { AppSidebar } from "@/components/chat/app-sidebar";
+import { ChatOrMain } from "@/components/chat/chat-or-main";
 import { DataStreamProvider } from "@/components/chat/data-stream-provider";
-import { ChatShell } from "@/components/chat/shell";
 import { PlacementProvider } from "@/components/placement/placement-provider";
 import { ProfileSheet } from "@/components/placement/profile-sheet";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ActiveChatProvider } from "@/hooks/use-active-chat";
 import { auth } from "../(auth)/auth";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -45,12 +44,9 @@ async function SidebarShell({ children }: { children: React.ReactNode }) {
             }}
           />
           <Suspense fallback={<div className="flex h-dvh" />}>
-            <ActiveChatProvider>
-              <ChatShell />
-            </ActiveChatProvider>
+            <ChatOrMain>{children}</ChatOrMain>
           </Suspense>
           <ProfileSheet />
-          {children}
         </SidebarInset>
       </SidebarProvider>
     </PlacementProvider>

@@ -16,8 +16,7 @@ export const Greeting = () => (
       initial={{ opacity: 0, y: 10 }}
       transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      Upload a resume, confirm your skills, then ask if you are ready for a
-      company and role.
+      Ask Databricks Genie about a company and role. Confirm your profile first.
     </motion.div>
   </div>
 );

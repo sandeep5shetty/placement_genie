@@ -36,7 +36,6 @@ import {
   getMessagesByChatId,
   saveChat,
   saveMessages,
-  updateChatTitleById,
   updateMessage,
 } from "@/lib/db/queries";
 import type { DBMessage } from "@/lib/db/schema";
@@ -49,10 +48,9 @@ import {
   generateUUID,
   getTextFromMessage,
 } from "@/lib/utils";
-import { generateTitleFromUserMessage } from "../../actions";
 import { type PostRequestBody, postRequestBodySchema } from "./schema";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 const HEALTH_CHECK_DELAY_MS = 9000;
 
@@ -126,7 +124,6 @@ export async function POST(request: Request) {
 
     const chat = await getChatById({ id });
     let messagesFromDb: DBMessage[] = [];
-    let titlePromise: Promise<string> | null = null;
 
     if (chat) {
       if (chat.userId !== session.user.id) {
@@ -140,7 +137,6 @@ export async function POST(request: Request) {
         userId: session.user.id,
         visibility: selectedVisibilityType,
       });
-      titlePromise = generateTitleFromUserMessage({ message });
     }
 
     let uiMessages: ChatMessage[];
@@ -205,17 +201,11 @@ export async function POST(request: Request) {
       });
     }
 
-    if (
-      !isToolApprovalFlow &&
-      studentContext &&
-      studentContext.skills.length > 0 &&
-      message
-    ) {
+    if (!isToolApprovalFlow && message) {
       return streamPlacementResponse({
         chatId: id,
         question: getTextFromMessage(message),
-        studentContext,
-        titlePromise,
+        studentContext: studentContext ?? { skills: [] },
       });
     }
 
@@ -228,7 +218,7 @@ export async function POST(request: Request) {
     const modelMessages = await convertToModelMessages(uiMessages);
 
     const stream = createUIMessageStream({
-      execute: async ({ writer: dataStream }) => {
+      execute: ({ writer: dataStream }) => {
         const modelName = modelConfig?.name ?? chatModel;
         let hasModelActivity = false;
         let healthCheckTimer: ReturnType<typeof setTimeout> | undefined;
@@ -356,16 +346,6 @@ export async function POST(request: Request) {
             stream: result.stream,
           })
         );
-
-        if (titlePromise) {
-          try {
-            const title = await titlePromise;
-            dataStream.write({ data: title, type: "data-chat-title" });
-            updateChatTitleById({ chatId: id, title });
-          } catch {
-            /* non-fatal */
-          }
-        }
       },
       generateId: generateUUID,
       onEnd: async ({ messages: finishedMessages }) => {

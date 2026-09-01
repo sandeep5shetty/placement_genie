@@ -178,10 +178,7 @@ export function ActiveChatProvider({ children }: { children: ReactNode }) {
               : { message: lastMessage }),
             selectedChatModel: currentModelIdRef.current,
             selectedVisibilityType: visibilityRef.current,
-            studentContext:
-              studentContextRef.current.skills.length > 0
-                ? studentContextRef.current
-                : undefined,
+            studentContext: studentContextRef.current,
             ...request.body,
           },
         };
