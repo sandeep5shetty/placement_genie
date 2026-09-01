@@ -1,0 +1,13 @@
+skill,course_or_resource,estimated_duration,difficulty_order
+DSA,"NeetCode 150 — arrays, hashing, two pointers, trees",2 weeks,1
+DSA,Campus contest set — weekly CodeChef / LeetCode mediums,2 weeks,2
+Aptitude,IndiaBix + campus aptitude mocks (quant + logical),1 week,1
+SQL,Mode SQL tutorial + 20 interview questions,1 week,1
+SQL,Window functions and CTEs — 15 interview drills,5 days,2
+Java,Java collections + OOP interview drills,1 week,1
+Python,"Python for interviews (functions, pandas, complexity)",1 week,1
+React,Build one production-style CRUD app and explain it,1 week,1
+OS,"OS concepts: processes, threads, deadlocks, memory",1 week,1
+DBMS,"DBMS: indexing, transactions, normalization drills",5 days,1
+Spark,Databricks Academy: Spark fundamentals + one ETL notebook,1 week,1
+System Design,"Grokking System Design — URL shortener, news feed, chat",2 weeks,1

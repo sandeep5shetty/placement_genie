@@ -1,0 +1,101 @@
+student_id,branch,semester,cgpa,skills,backlog_count
+1BM25MC001,MCA,3,8.2,"DSA,React,Python,SQL",0
+1BM25MC002,ECE,1,8.52,"DSA,Aptitude,Java,OS,Spark,SQL,Python",0
+1BM25MC003,CSE,2,8.04,"DSA,Aptitude,Python,SQL,Spark,Java,React",0
+1BM25MC004,EEE,3,7.72,"DSA,Aptitude,Java,OS,Python",1
+1BM25MC005,ECE,3,7.23,"DSA,Aptitude,Java,OS,Python",1
+1BM25MC006,MCA,3,7.79,"DSA,Aptitude,Python,SQL,Spark,OS",0
+1BM25MC007,MCA,1,8.22,"DSA,Aptitude,Python,SQL,Java,Spark",1
+1BM25MC008,ISE,2,6.91,"DSA,Aptitude,Python,SQL,Java,System Design,React",1
+1BM25MC009,MCA,1,6.87,"DSA,Aptitude,Python,SQL,OS,DBMS",1
+1BM25MC010,ECE,3,7.49,"DSA,Aptitude,Java,OS,SQL,Python,DBMS",1
+1BM25MC011,CSE,3,8.47,"DSA,Aptitude,Python,SQL,Spark,React,Java",1
+1BM25MC012,CSE,2,8.56,"DSA,Aptitude,Python,SQL,OS,React,System Design",0
+1BM25MC013,MCA,2,8.08,"DSA,Aptitude,Python,SQL,React,System Design",1
+1BM25MC014,AIML,3,7.94,"DSA,Aptitude,Python,SQL,React",1
+1BM25MC015,AIML,1,7.19,"DSA,Aptitude,Python,SQL,React",0
+1BM25MC016,ECE,4,8.15,"DSA,Aptitude,Java,OS,Spark,DBMS",0
+1BM25MC017,AIML,1,7.22,"DSA,Aptitude,Python,SQL,Spark,OS,System Design",0
+1BM25MC018,CSE,2,9.1,"DSA,Aptitude,Python,SQL,Java,OS,React",0
+1BM25MC019,CSE,1,7.97,"DSA,Aptitude,Python,SQL,OS,DBMS,Java",0
+1BM25MC020,CSE,2,6.59,"DSA,Aptitude,Python,SQL,React",1
+1BM25MC021,MCA,1,9.54,"DSA,Aptitude,Python,SQL,DBMS,Java,React",0
+1BM25MC022,CSE,4,7.05,"DSA,Aptitude,Python,SQL,Spark",1
+1BM25MC023,EEE,3,8.09,"DSA,Aptitude,Java,OS,React,System Design",0
+1BM25MC024,AIML,2,7.95,"DSA,Aptitude,Python,SQL,React,Java,Spark",0
+1BM25MC025,EEE,2,8.21,"DSA,Aptitude,Java,OS,SQL",0
+1BM25MC026,MCA,2,8.43,"DSA,Aptitude,Python,SQL,React,Spark,DBMS",1
+1BM25MC027,CSE,4,8.18,"DSA,Aptitude,Python,SQL,Java",1
+1BM25MC028,CSE,1,7.26,"DSA,Aptitude,Python,SQL,Java,Spark,DBMS",2
+1BM25MC029,MCA,2,8.27,"DSA,Aptitude,Python,SQL,React",0
+1BM25MC030,AIML,2,8.24,"DSA,Aptitude,Python,SQL,DBMS",1
+1BM25MC031,MCA,1,8.3,"DSA,Aptitude,Python,SQL,Spark,Java,System Design",0
+1BM25MC032,MCA,4,8.37,"DSA,Aptitude,Python,SQL,React",0
+1BM25MC033,ISE,3,8.67,"DSA,Aptitude,Python,SQL,OS,DBMS",1
+1BM25MC034,ECE,2,7.8,"DSA,Aptitude,Java,OS,React",1
+1BM25MC035,CSE,1,6.7,"DSA,Aptitude,Python,SQL,OS,Java,Spark",0
+1BM25MC036,ECE,1,6.54,"DSA,Aptitude,Java,OS,SQL,Python,DBMS",1
+1BM25MC037,ISE,1,7.92,"DSA,Aptitude,Python,SQL,Java,DBMS,OS",0
+1BM25MC038,MCA,3,8.27,"DSA,Aptitude,Python,SQL,React,OS",0
+1BM25MC039,AIML,1,9.05,"DSA,Aptitude,Python,SQL,DBMS",0
+1BM25MC040,ECE,3,7.65,"DSA,Aptitude,Java,OS,React",0
+1BM25MC041,MCA,3,7.82,"DSA,Aptitude,Python,SQL,React,DBMS",0
+1BM25MC042,MCA,3,7.66,"DSA,Aptitude,Python,SQL,Java,React,OS",0
+1BM25MC043,CSE,2,7.0,"DSA,Aptitude,Python,SQL,OS,Spark",0
+1BM25MC044,CSE,4,7.34,"DSA,Aptitude,Python,SQL,Java,DBMS",1
+1BM25MC045,CSE,2,8.87,"DSA,Aptitude,Python,SQL,OS,React,DBMS",0
+1BM25MC046,ECE,2,7.86,"DSA,Aptitude,Java,OS,SQL,React,Python",0
+1BM25MC047,AIML,3,7.99,"DSA,Aptitude,Python,SQL,Java,OS",0
+1BM25MC048,CSE,2,7.95,"DSA,Aptitude,Python,SQL,React",1
+1BM25MC049,MCA,4,8.29,"DSA,Aptitude,Python,SQL,React",0
+1BM25MC050,EEE,3,7.13,"DSA,Aptitude,Java,OS,SQL",1
+1BM25MC051,MCA,4,9.4,"DSA,Aptitude,Python,SQL,OS,React",0
+1BM25MC052,CSE,1,7.56,"DSA,Aptitude,Python,SQL,OS,Spark",0
+1BM25MC053,ISE,1,7.34,"DSA,Aptitude,Python,SQL,OS",1
+1BM25MC054,CSE,4,8.5,"DSA,Aptitude,Python,SQL,OS,System Design",0
+1BM25MC055,CSE,3,7.82,"DSA,Aptitude,Python,SQL,Spark",0
+1BM25MC056,MCA,3,6.84,"DSA,Aptitude,Python,SQL,Java,OS",1
+1BM25MC057,ECE,3,7.68,"DSA,Aptitude,Java,OS,React,DBMS,Spark",0
+1BM25MC058,ECE,2,8.33,"DSA,Aptitude,Java,OS,Spark,React,DBMS",1
+1BM25MC059,ECE,3,8.94,"DSA,Aptitude,Java,OS,DBMS",0
+1BM25MC060,EEE,4,7.45,"DSA,Aptitude,Java,OS,Python,Spark,DBMS",2
+1BM25MC061,EEE,1,7.56,"DSA,Aptitude,Java,OS,Spark,Python",0
+1BM25MC062,ECE,1,8.03,"DSA,Aptitude,Java,OS,DBMS",0
+1BM25MC063,ECE,4,8.42,"DSA,Aptitude,Java,OS,Spark,DBMS",0
+1BM25MC064,AIML,1,7.99,"DSA,Aptitude,Python,SQL,React,System Design",0
+1BM25MC065,ECE,2,9.0,"DSA,Aptitude,Java,OS,DBMS",0
+1BM25MC066,CSE,4,7.09,"DSA,Aptitude,Python,SQL,System Design,Spark,DBMS",1
+1BM25MC067,ECE,4,8.15,"DSA,Aptitude,Java,OS,React,Python",0
+1BM25MC068,MCA,2,7.74,"DSA,Aptitude,Python,SQL,DBMS,Java",1
+1BM25MC069,EEE,3,9.18,"DSA,Aptitude,Java,OS,Spark,SQL",0
+1BM25MC070,CSE,1,8.08,"DSA,Aptitude,Python,SQL,DBMS,OS",0
+1BM25MC071,ECE,2,9.05,"DSA,Aptitude,Java,OS,DBMS,Spark",0
+1BM25MC072,MCA,4,9.42,"DSA,Aptitude,Python,SQL,OS",0
+1BM25MC073,ISE,4,8.13,"DSA,Aptitude,Python,SQL,Spark,React,DBMS",1
+1BM25MC074,AIML,4,8.59,"DSA,Aptitude,Python,SQL,React,DBMS,System Design",0
+1BM25MC075,AIML,1,8.07,"DSA,Aptitude,Python,SQL,DBMS",1
+1BM25MC076,CSE,3,7.91,"DSA,Aptitude,Python,SQL,DBMS,OS",1
+1BM25MC077,EEE,3,8.59,"DSA,Aptitude,Java,OS,DBMS",0
+1BM25MC078,CSE,2,6.1,"DSA,Aptitude,Python,SQL,Java,System Design,Spark",1
+1BM25MC079,CSE,2,7.19,"DSA,Aptitude,Python,SQL,React",0
+1BM25MC080,AIML,3,9.27,"DSA,Aptitude,Python,SQL,React,Spark",0
+1BM25MC081,ECE,1,9.1,"DSA,Aptitude,Java,OS,React",0
+1BM25MC082,CSE,4,8.56,"DSA,Aptitude,Python,SQL,React,OS",0
+1BM25MC083,CSE,1,8.05,"DSA,Aptitude,Python,SQL,Java,OS,DBMS",0
+1BM25MC084,ECE,4,8.89,"DSA,Aptitude,Java,OS,SQL,DBMS",0
+1BM25MC085,MCA,2,8.39,"DSA,Aptitude,Python,SQL,React,Spark",1
+1BM25MC086,MCA,4,7.79,"DSA,Aptitude,Python,SQL,Spark,React",1
+1BM25MC087,MCA,4,9.25,"DSA,Aptitude,Python,SQL,DBMS",0
+1BM25MC088,ECE,3,7.63,"DSA,Aptitude,Java,OS,DBMS",1
+1BM25MC089,CSE,3,7.38,"DSA,Aptitude,Python,SQL,Spark,OS",1
+1BM25MC090,ECE,4,7.48,"DSA,Aptitude,Java,OS,Spark,Python",1
+1BM25MC091,ECE,4,7.9,"DSA,Aptitude,Java,OS,SQL",1
+1BM25MC092,ISE,4,7.51,"DSA,Aptitude,Python,SQL,Spark,OS,DBMS",0
+1BM25MC093,MCA,3,8.25,"DSA,Aptitude,Python,SQL,DBMS,OS,Spark",0
+1BM25MC094,CSE,2,8.29,"DSA,Aptitude,Python,SQL,React",0
+1BM25MC095,EEE,3,8.27,"DSA,Aptitude,Java,OS,Python",0
+1BM25MC096,ISE,3,7.56,"DSA,Aptitude,Python,SQL,Java",0
+1BM25MC097,ECE,4,8.42,"DSA,Aptitude,Java,OS,SQL",0
+1BM25MC098,ECE,1,7.19,"DSA,Aptitude,Java,OS,DBMS,SQL",1
+1BM25MC099,MCA,4,8.1,"DSA,Aptitude,Python,SQL,Spark",1
+1BM25MC100,ECE,1,8.34,"DSA,Aptitude,Java,OS,SQL",0

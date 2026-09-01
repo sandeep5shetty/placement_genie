@@ -1,0 +1,31 @@
+company_id,name,role,job_description,required_skills,min_cgpa,package,visiting_date
+CMP001,Amazon,SDE Intern,"Campus SDE intern: DSA screening, React for product UI, and basic system design.","DSA,React,System Design",7.5,28.0,2026-09-18
+CMP002,Google,SWE Intern,"SWE intern: algorithms, Java/C++, OS, and scalable service design.","DSA,Java,OS,System Design",8.5,32.0,2026-10-03
+CMP003,Microsoft,SDE Intern,"Azure-facing product intern: DSA, Python/SQL, and system design.","DSA,Python,SQL,System Design",8.0,26.0,2026-10-08
+CMP004,Honeywell,Software Engineer Intern,"Controls and software intern for industrial systems; C/Java, OS, and aptitude.","Java,OS,Aptitude",7.0,12.0,2026-09-22
+CMP005,TCS,Ninja,Ninja profile: aptitude plus basic Java for mass campus hiring.,"Aptitude,Java",6.0,3.6,2026-08-28
+CMP006,Infosys,Systems Engineer,"Systems engineer: aptitude, Java, and SQL for client projects.","Aptitude,Java,SQL",6.5,4.5,2026-09-04
+CMP007,Wipro,Project Engineer,"Project engineer: aptitude, SQL, and DBMS for enterprise delivery.","Aptitude,SQL,DBMS",6.5,4.0,2026-09-10
+CMP008,Accenture,Associate Software Engineer,"Associate software engineer: Java, SQL, and aptitude for consulting delivery.","Aptitude,Java,SQL",6.5,4.8,2026-09-14
+CMP009,Cognizant,GenC,"GenC: Java, SQL, and aptitude for digital engineering programs.","Aptitude,Java,SQL",6.5,4.5,2026-09-16
+CMP010,Capgemini,Analyst,Analyst: Java/SQL plus aptitude for transformation programs.,"Aptitude,Java,SQL",6.5,4.5,2026-09-20
+CMP011,IBM,Application Developer,"Application developer: Java, SQL, and DBMS.","Java,SQL,DBMS",6.5,6.5,2026-09-24
+CMP012,HCLTech,Graduate Engineer Trainee,Graduate engineer trainee: Java and aptitude.,"Aptitude,Java",6.5,4.2,2026-09-26
+CMP013,Deloitte,Analyst,"Analyst: SQL, Python, and aptitude for consulting projects.","SQL,Python,Aptitude",7.0,8.0,2026-10-01
+CMP014,Adobe,SDE Intern,"Adobe product intern: DSA, Java, and system design.","DSA,Java,System Design",8.0,24.0,2026-10-06
+CMP015,Cisco,Software Engineer Intern,"Networking/software intern: DSA, OS, and C/Java.","DSA,OS,Java",7.5,16.0,2026-10-10
+CMP016,Oracle,Applications Engineer,"Database and cloud apps: Java, SQL, DBMS.","Java,SQL,DBMS",7.0,12.0,2026-10-12
+CMP017,SAP,Associate Developer,"ABAP/cloud adjacent developer: SQL, Java, aptitude.","SQL,Java,Aptitude",7.0,11.0,2026-10-14
+CMP018,Salesforce,SDE Intern,"Salesforce intern: DSA, Java, and system design basics.","DSA,Java,System Design",7.5,18.0,2026-10-18
+CMP019,Bosch,Software Intern,"Automotive embedded/software intern: OS, Java, aptitude.","OS,Java,Aptitude",7.0,8.5,2026-10-20
+CMP020,Qualcomm,Software Engineer Intern,"Semiconductor software intern: DSA, OS, and C/Java.","DSA,OS,Java",7.5,20.0,2026-10-22
+CMP021,Intel,Software Engineer Intern,"Intel software intern: OS, C/Java, and DSA.","DSA,OS,Java",7.5,18.0,2026-10-24
+CMP022,Zoho,SDE,"Product SDE: strong DSA and Java, some system design.","DSA,Java,System Design",7.0,10.0,2026-10-28
+CMP023,Freshworks,SDE Intern,"SaaS intern: DSA, React, and SQL.","DSA,React,SQL",7.0,12.0,2026-10-30
+CMP024,Flipkart,SDE Intern,"Ecommerce SDE intern: DSA, Java, system design.","DSA,Java,System Design",7.5,21.0,2026-11-04
+CMP025,Walmart Global Tech,SDE Intern,"Walmart Global Tech intern: DSA, Java, system design.","DSA,Java,System Design",7.5,20.0,2026-11-06
+CMP026,PhonePe,SDE Intern,"Payments intern: DSA, Java, system design.","DSA,Java,System Design",7.5,18.0,2026-11-08
+CMP027,Goldman Sachs,Summer Analyst,"Engineering summer analyst: DSA, Python, SQL, aptitude.","DSA,Python,SQL,Aptitude",8.0,30.0,2026-11-10
+CMP028,JPMorgan Chase,Software Engineer Intern,"Software engineer intern: DSA, Java, and SQL.","DSA,Java,SQL",7.5,22.0,2026-11-12
+CMP029,Intuit,SDE Intern,"Intuit intern: DSA, React, and SQL for fintech products.","DSA,React,SQL",7.5,18.0,2026-11-14
+CMP030,Databricks,Data Engineer Intern,"Lakehouse intern: Python, SQL, Spark, and system design.","Python,SQL,Spark,System Design",8.0,22.0,2026-11-18
