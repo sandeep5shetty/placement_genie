@@ -1,22 +1,113 @@
 # Placement Readiness Genie
 
-Campus placement assistant: students confirm skills (resume or profile), ask whether they are ready for a company and role, and get a sequenced study plan for the gaps.
+AI-powered campus placement platform with two separate modules:
 
-The chat UI is Next.js + AI SDK. Placement answers are meant to come from a **Databricks Genie** space over campus Delta tables; the roadmap agent maps missing skills to `skill_courses`.
+- **PLO Module** — Placement Intelligence for Placement Officers and placement teams
+- **Student Module** — Placement Readiness Genie for individual students
+
+The platform uses **Databricks Genie** and campus placement data to provide placement analytics at the institutional level and personalized readiness analysis at the student level.
+
+---
+
+## Modules
+
+### 1. PLO — Placement Intelligence
+
+The PLO module is designed for Placement Officers and placement teams.
+
+It helps analyze campus placement performance, recruitment drives, skill gaps, student assessment trends, and learning progress.
+
+Users can ask natural-language questions and receive:
+
+- Placement performance insights
+- Recruitment funnel analysis
+- Applicant, shortlisted, and selected metrics
+- Conversion rates and drop-off analysis
+- Company and role-wise comparisons
+- Skill gap insights
+- Assessment performance trends
+- Roadmap completion analysis
+- Intervention recommendations
+- Interactive charts and visualizations
+
+Example questions:
+
+- What is the overall placement performance?
+- Analyze the placement recruitment funnel across all drives.
+- Which drives have the worst shortlist-to-selection conversion?
+- Identify the highest-impact skill gaps.
+- What intervention areas should the placement team prioritize?
+
+The PLO module uses a **Databricks Genie Agent** connected to campus placement Delta tables.
+
+---
+
+### 2. Student — Placement Readiness Genie
+
+The Student module is designed for individual students.
+
+Students can confirm their skills using their profile or resume, ask whether they are ready for a company and role, and receive a sequenced study plan for missing skills.
+
+Example:
+
+> Am I ready for Amazon's SDE Intern role?
+
+The system compares the student's profile with company requirements and identifies:
+
+- CGPA eligibility
+- Matching skills
+- Missing skills
+- Skill match percentage
+- Placement readiness
+- Recommended study roadmap
+
+The roadmap maps missing skills to available courses from `skill_courses`.
+
+---
 
 ## What it does
+The platform connects institutional placement insights with individual student readiness, enabling data-driven decisions and personalized skill development.
 
-- Sign in, then open **Profile** to set CGPA, college, target role, and skills
+### PLO Module
+
+- Analyze overall placement performance
+- Track applicants, shortlisted candidates, and selected candidates
+- Calculate recruitment conversion rates
+- Identify placement funnel bottlenecks
+- Compare company and role-wise recruitment performance
+- Analyze student assessment performance
+- Identify institution-level skill gaps
+- Track roadmap and skill development progress
+- Generate data-driven recommendations
+- Display interactive charts and visualizations from Genie query results
+
+### Student Module
+
+- Sign in and create a student profile
+- Set CGPA, college, target role, and skills
 - Upload a resume (PDF/DOCX) to extract skills and CGPA
-- Ask questions such as “Am I ready for Amazon’s SDE Intern?”
-- See a readiness score plus a short roadmap for missing skills
+- Ask whether they are ready for a company and role
+- Compare student skills with company requirements
+- Identify missing skills
+- Check CGPA eligibility
+- Generate a readiness result
+- Receive a sequenced study roadmap for skill gaps
+
+---
 
 ## Stack
 
-- Next.js App Router, Auth.js, Neon Postgres (chat history)
+- Next.js App Router
+- TypeScript
+- Auth.js
+- Neon Postgres (chat history)
 - OpenAI via `@ai-sdk/openai` for resume extraction and fallback chat
-- Databricks Genie Agent (Conversation API) when `DATABRICKS_*` env vars are set; otherwise a local stub
-- Roadmap from `skill_courses` (`lib/placement/roadmap.ts`)
+- Databricks Genie Agent using Conversation API
+- Databricks Unity Catalog / Delta Tables
+- Recharts for analytics visualizations
+- Roadmap generation from `skill_courses`
+
+---
 
 ## Run locally
 
@@ -25,62 +116,15 @@ Copy `.env.example` to `.env.local` and fill in:
 | Variable | Purpose |
 |---|---|
 | `AUTH_SECRET` | Auth.js secret (`openssl rand -base64 32`) |
-| `OPENAI_API_KEY` | Resume skill/CGPA extraction and chat |
+| `OPENAI_API_KEY` | Resume skill/CGPA extraction and fallback chat |
 | `POSTGRES_URL` | Neon (or other) Postgres connection string |
 | `BLOB_READ_WRITE_TOKEN` | Optional — file uploads |
 | `REDIS_URL` | Optional — rate limiting |
 | `DATABRICKS_HOST` | Workspace URL, no trailing slash |
 | `DATABRICKS_TOKEN` | PAT or service principal token |
-| `DATABRICKS_GENIE_AGENT_ID` | Genie Agent ID from the agent URL |
+| `DATABRICKS_GENIE_AGENT_ID` | Genie Agent ID |
 
 ```bash
 pnpm install
 pnpm db:migrate
-pnpm dev
-```
-
-App: [http://localhost:3000](http://localhost:3000)
-
-Do not commit `.env.local`.
-
-## Databricks data
-
-CSVs for Unity Catalog (`campus.placement`):
-
-| Table | File |
-|---|---|
-| students | `databricks/data/students.csv` |
-| companies | `databricks/data/companies.csv` |
-| student_scores | `databricks/data/student_scores.csv` |
-| skill_courses | `databricks/data/skill_courses.csv` |
-| placement_drives | `databricks/data/placement_drives.csv` |
-| roadmap_progress | `databricks/data/roadmap_progress.csv` |
-
-Regenerate:
-
-```bash
-python databricks/generate_placement_data.py
-```
-
-Demo student: **`1BM25MC001`** (CGPA 8.2, skills DSA, React, Python, SQL) vs Amazon SDE Intern (`CMP001`). Meets CGPA, missing **System Design**.
-
-Genie space copy-paste:
-
-- Instructions: `databricks/genie/INSTRUCTIONS.md`
-- Sample questions + SQL: `databricks/genie/sample_questions.sql`
-
-Live phrasing to seed:
-
-- Am I ready for Amazon's SDE Intern?
-- What skills am I missing for Amazon?
-- Which companies can I apply to right now given my CGPA?
-- How did students with a similar CGPA perform in past drives?
-- How many students meet Amazon's cutoff?
-
-## Readiness
-
-A student meets the CGPA bar if `cgpa >=` the role’s `min_cgpa`.
-
-Skill match % = (overlapping skills) / (required skills).
-
-Answers should name what is met and what is missing, using the skill names from the tables.
+pnpm dev   
