@@ -23,25 +23,7 @@ import {
 } from "@/components/ui/sheet";
 import type { StudentProfile } from "@/lib/placement/types";
 import { usePlacement } from "./placement-provider";
-
-function emailToHue(value: string) {
-  let hash = 0;
-  for (const char of value) {
-    hash = char.charCodeAt(0) + (hash * 32 - hash);
-  }
-  return Math.abs(hash) % 360;
-}
-
-function initialsFromName(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) {
-    return "PR";
-  }
-  if (parts.length === 1) {
-    return parts[0].slice(0, 2).toUpperCase();
-  }
-  return `${parts[0][0]}${parts.at(-1)?.[0] ?? ""}`.toUpperCase();
-}
+import { ProfileMark } from "./profile-mark";
 
 function ProfileInput({
   className,
@@ -231,7 +213,6 @@ export function ProfileSheet() {
   );
 
   const displayName = name.trim() || "Your profile";
-  const hue = emailToHue(name || email || "profile");
 
   return (
     <Sheet onOpenChange={setProfileOpen} open={profileOpen}>
@@ -248,14 +229,7 @@ export function ProfileSheet() {
 
         <div className="flex flex-col gap-6 px-6 pb-8">
           <div className="flex items-center gap-3">
-            <div
-              className="flex size-12 shrink-0 items-center justify-center rounded-xl text-[13px] font-medium text-primary-foreground ring-1 ring-border/50"
-              style={{
-                background: `linear-gradient(135deg, oklch(0.35 0.08 ${hue}), oklch(0.25 0.05 ${hue + 40}))`,
-              }}
-            >
-              {initialsFromName(name)}
-            </div>
+            <ProfileMark className="ring-1 ring-border/50" size={48} />
             <div className="min-w-0">
               <p className="truncate text-[15px] font-medium tracking-tight">
                 {displayName}

@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { GenieMark } from "@/components/placement/genie-mark";
 import { suggestions } from "@/lib/constants";
-import { SparklesIcon } from "./icons";
 
 function PreviewSuggestionButton({
   suggestion,
@@ -45,19 +45,17 @@ export function Preview() {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-tl-2xl bg-background">
       <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border/20 px-5">
-        <div className="flex size-5 items-center justify-center rounded bg-muted/60 ring-1 ring-border/50">
-          <SparklesIcon size={10} />
+        <div className="flex size-6 items-center justify-center overflow-hidden rounded-md">
+          <GenieMark size={22} />
         </div>
-        <span className="text-[13px] text-muted-foreground">Chatbot</span>
+        <span className="text-[13px] text-muted-foreground">Ask Genie</span>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-8 px-8">
         <div className="text-center">
-          <h2 className="text-xl font-semibold tracking-tight">
-            What can I help with?
-          </h2>
+          <h2 className="text-xl font-semibold tracking-tight">Ask Genie</h2>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            Ask a question, write code, or explore ideas.
+            Check placement readiness for a company and role.
           </p>
         </div>
 
@@ -78,7 +76,7 @@ export function Preview() {
           onClick={handleDefaultAction}
           type="button"
         >
-          Ask anything...
+          Ask Genie...
         </button>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  MessageSquareIcon,
   PanelLeftIcon,
   PenSquareIcon,
   TrashIcon,
@@ -19,6 +18,7 @@ import {
   SidebarHistory,
 } from "@/components/chat/sidebar-history";
 import { SidebarUserNav } from "@/components/chat/sidebar-user-nav";
+import { GenieMark } from "@/components/placement/genie-mark";
 import { usePlacement } from "@/components/placement/placement-provider";
 import { SidebarRoadmaps } from "@/components/placement/sidebar-roadmaps";
 import {
@@ -99,11 +99,11 @@ export function AppSidebar({ user }: { user: User | undefined }) {
               <div className="group/logo relative flex items-center justify-center">
                 <SidebarMenuButton
                   asChild
-                  className="size-8 !px-0 items-center justify-center group-data-[collapsible=icon]:group-hover/logo:opacity-0"
-                  tooltip="Chatbot"
+                  className="size-8 !px-0 items-center justify-center overflow-visible group-data-[collapsible=icon]:group-hover/logo:opacity-0 [&>span:last-child]:overflow-visible"
+                  tooltip="Ask Genie"
                 >
                   <Link href="/" onClick={closeMobile}>
-                    <MessageSquareIcon className="size-4 text-sidebar-foreground/50" />
+                    <GenieMark size={22} />
                   </Link>
                 </SidebarMenuButton>
                 <Tooltip>

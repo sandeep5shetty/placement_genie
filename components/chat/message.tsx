@@ -1,7 +1,9 @@
 "use client";
 import type { UseChatHelpers } from "@ai-sdk/react";
 import { useCallback } from "react";
+import { GenieMark } from "@/components/placement/genie-mark";
 import { GenieTables } from "@/components/placement/genie-tables";
+import { ProfileMark } from "@/components/placement/profile-mark";
 import { ReadinessScore } from "@/components/placement/readiness-score";
 import { RoadmapOffer } from "@/components/placement/roadmap-offer";
 import type { Vote } from "@/lib/db/schema";
@@ -19,7 +21,6 @@ import {
 import { useDataStream } from "./data-stream-provider";
 import { DocumentToolResult } from "./document";
 import { DocumentPreview } from "./document-preview";
-import { SparklesIcon } from "./icons";
 import { MessageActions } from "./message-actions";
 import { MessageReasoning } from "./message-reasoning";
 import { PreviewAttachment } from "./preview-attachment";
@@ -389,22 +390,21 @@ const PurePreviewMessage = ({
       data-role={message.role}
       data-testid={`message-${message.role}`}
     >
-      <div
-        className={cn(
-          isUser ? "flex flex-col items-end gap-2" : "flex items-start gap-3"
-        )}
-      >
+      <div className={cn("flex items-start gap-3", isUser && "justify-end")}>
         {isAssistant && (
-          <div className="flex h-[calc(13px*1.65)] shrink-0 items-center">
-            <div className="flex size-7 items-center justify-center rounded-lg bg-muted/60 text-muted-foreground ring-1 ring-border/50">
-              <SparklesIcon size={13} />
-            </div>
+          <div className="mt-0.5 shrink-0">
+            <GenieMark size={28} />
           </div>
         )}
         {isAssistant ? (
           <div className="flex min-w-0 flex-1 flex-col gap-2">{content}</div>
         ) : (
-          content
+          <div className="flex min-w-0 flex-col items-end gap-2">{content}</div>
+        )}
+        {isUser && (
+          <div className="mt-0.5 shrink-0">
+            <ProfileMark size={28} />
+          </div>
         )}
       </div>
     </div>
@@ -420,10 +420,8 @@ export const ThinkingMessage = () => (
     data-testid="message-assistant-loading"
   >
     <div className="flex items-start gap-3">
-      <div className="flex h-[calc(13px*1.65)] shrink-0 items-center">
-        <div className="flex size-7 items-center justify-center rounded-lg bg-muted/60 text-muted-foreground ring-1 ring-border/50">
-          <SparklesIcon size={13} />
-        </div>
+      <div className="mt-0.5 shrink-0">
+        <GenieMark size={28} />
       </div>
 
       <WaitingText />

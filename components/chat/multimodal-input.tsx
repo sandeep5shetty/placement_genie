@@ -537,9 +537,7 @@ function PureMultimodalInput({
           data-testid="multimodal-input"
           onChange={handleInput}
           onKeyDown={handleTextareaKeyDown}
-          placeholder={
-            editingMessage ? "Edit your message..." : "Ask anything..."
-          }
+          placeholder={editingMessage ? "Edit your message..." : "Ask Genie..."}
           ref={textareaRef}
           value={input}
         />
