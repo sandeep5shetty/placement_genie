@@ -63,17 +63,24 @@ function PureMessages({
     scrollToBottom("smooth");
   }, [scrollToBottom]);
 
+  const isEmptyChat = messages.length === 0 && !isLoading;
+
   return (
-    <div className="relative flex-1 bg-background">
-      {messages.length === 0 && !isLoading && (
-        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+    <div
+      className={cn(
+        "relative bg-background",
+        isEmptyChat ? "shrink-0" : "flex-1"
+      )}
+    >
+      {isEmptyChat ? (
+        <div className="flex justify-center px-4 pt-10 md:pt-14">
           <Greeting />
         </div>
-      )}
+      ) : null}
       <div
         className={cn(
-          "absolute inset-0 touch-pan-y overflow-y-auto",
-          messages.length > 0 ? "bg-background" : "bg-transparent"
+          "touch-pan-y overflow-y-auto",
+          isEmptyChat ? "hidden" : "absolute inset-0 bg-background"
         )}
         ref={messagesContainerRef}
         style={isArtifactVisible ? { scrollbarWidth: "none" } : undefined}
@@ -117,7 +124,7 @@ function PureMessages({
       <button
         aria-label="Scroll to bottom"
         className={`absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center rounded-full border border-border/50 bg-card/90 px-3.5 shadow-[var(--shadow-float)] backdrop-blur-lg transition-all duration-200 h-7 text-[10px] ${
-          isAtBottom
+          isEmptyChat || isAtBottom
             ? "pointer-events-none scale-90 opacity-0"
             : "pointer-events-auto scale-100 opacity-100"
         }`}

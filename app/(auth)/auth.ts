@@ -4,9 +4,14 @@ import type { DefaultJWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { DUMMY_PASSWORD } from "@/lib/constants";
 import { createGuestUser, getUser } from "@/lib/db/queries";
+import {
+  PLACEMENT_CELL_EMAIL,
+  PLACEMENT_CELL_USER_ID,
+  verifyPlacementCellCode,
+} from "@/lib/placement-cell/auth";
 import { authConfig } from "./auth.config";
 
-export type UserType = "guest" | "regular";
+export type UserType = "guest" | "placement_cell" | "regular";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -94,6 +99,24 @@ export const {
       },
       credentials: {},
       id: "guest",
+    }),
+    Credentials({
+      authorize(credentials) {
+        const code = String(credentials.code ?? "");
+        if (!verifyPlacementCellCode(code)) {
+          return null;
+        }
+
+        return {
+          email: PLACEMENT_CELL_EMAIL,
+          id: PLACEMENT_CELL_USER_ID,
+          type: "placement_cell" as const,
+        };
+      },
+      credentials: {
+        code: { label: "Access code", type: "password" },
+      },
+      id: "placement-cell",
     }),
   ],
 });

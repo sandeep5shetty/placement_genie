@@ -8,6 +8,9 @@ export const entitlementsByUserType: Record<UserType, Entitlements> = {
   guest: {
     maxMessagesPerHour: 10,
   },
+  placement_cell: {
+    maxMessagesPerHour: 100,
+  },
   regular: {
     maxMessagesPerHour: 10,
   },

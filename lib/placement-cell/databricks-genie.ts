@@ -1,11 +1,15 @@
-import type { StudentContext } from "./types";
+import "server-only";
+
+import { parseAnalyticsAnswer } from "./parse-analytics";
+import { buildPlacementCellPrompt } from "./prompts";
+import type { PlacementCellGenieResponse } from "./types";
 
 type JsonObject = {
   [key: string]: JsonValue;
 };
 type JsonValue = string | number | boolean | null | JsonValue[] | JsonObject;
 
-const conversationsByChat = new Map<string, string>();
+const conversations = new Map<string, string>();
 
 function isRecord(value: JsonValue | undefined): value is JsonObject {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -15,61 +19,26 @@ function asString(value: JsonValue | undefined): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
-function workspaceHost() {
-  const host = process.env.DATABRICKS_HOST?.trim().replace(/\/$/, "");
-  const token = process.env.DATABRICKS_TOKEN?.trim();
-  const agentId = process.env.DATABRICKS_GENIE_AGENT_ID?.trim();
+function workspaceConfig() {
+  const host =
+    process.env.PLACEMENT_CELL_DATABRICKS_HOST?.trim().replace(/\/$/, "") ??
+    process.env.DATABRICKS_HOST?.trim().replace(/\/$/, "");
+  const token =
+    process.env.PLACEMENT_CELL_DATABRICKS_TOKEN?.trim() ??
+    process.env.DATABRICKS_TOKEN?.trim();
+  const agentId =
+    process.env.PLACEMENT_CELL_GENIE_AGENT_ID?.trim() ??
+    process.env.DATABRICKS_GENIE_AGENT_ID?.trim();
+
   if (!(host && token && agentId)) {
     return null;
   }
+
   return { agentId, host, token };
 }
 
-export function isGenieConfigured() {
-  return workspaceHost() !== null;
-}
-
-export function buildGeniePrompt(
-  question: string,
-  studentContext: StudentContext
-) {
-  const lines = [
-    "You are answering for ONE logged-in student. Never substitute another student from the tables.",
-    "Only answer campus placement questions: visiting companies, roles, CGPA cutoffs, required skills, readiness, and study roadmaps.",
-    "If the question is not about campus placement data (for example unrelated careers), do not query tables. Say you only cover campus companies and roles.",
-    "Name what is met and what is missing, using exact skill names.",
-    "A student meets the CGPA bar if their CGPA >= the role min_cgpa.",
-    "Skill match % = count of required skills whose exact name appears in the profile skills list, divided by total required skills.",
-    "Match skills by name only (case-insensitive). OS is not System Design. DBMS is not SQL. Do not invent equivalences.",
-    "Never report 100% skill match if any required skill is absent from the profile list.",
-    "A student is fully ready only when CGPA meets min_cgpa AND skill match is 100%.",
-    "Do not emit citation markers such as ]] or \\]. Do not append suggested follow-up questions.",
-    "After any tables, write a short summary. Do not restate every table row.",
-    studentContext.usn
-      ? `Look up campus.placement.students only for student_id = ${studentContext.usn}. If table CGPA/skills differ from this profile, use the profile values.`
-      : "Do not look up any row in the students table. Compute readiness from this profile against companies (and placement_drives / skill_courses as needed).",
-    "",
-    "Authoritative profile for this request:",
-    studentContext.usn
-      ? `- usn / student_id: ${studentContext.usn}`
-      : "- usn / student_id: not provided",
-    studentContext.name
-      ? `- name: ${studentContext.name}`
-      : "- name: not provided",
-    studentContext.cgpa
-      ? `- cgpa: ${studentContext.cgpa}`
-      : "- cgpa: not provided",
-    studentContext.college ? `- college: ${studentContext.college}` : null,
-    studentContext.degree ? `- degree: ${studentContext.degree}` : null,
-    studentContext.email ? `- email: ${studentContext.email}` : null,
-    studentContext.targetRole
-      ? `- target_role: ${studentContext.targetRole}`
-      : null,
-    `- skills: ${studentContext.skills.join(", ") || "none listed"}`,
-    "",
-    `Question: ${question}`,
-  ];
-  return lines.filter((line) => line !== null).join("\n");
+export function isPlacementCellGenieConfigured() {
+  return workspaceConfig() !== null;
 }
 
 function collectText(value: JsonValue, acc: string[]) {
@@ -79,9 +48,11 @@ function collectText(value: JsonValue, acc: string[]) {
     }
     return;
   }
+
   if (!isRecord(value)) {
     return;
   }
+
   if (value.type === "output_text" && typeof value.text === "string") {
     const trimmed = value.text.trim();
     if (trimmed.length > 0) {
@@ -89,6 +60,7 @@ function collectText(value: JsonValue, acc: string[]) {
     }
     return;
   }
+
   if (
     value.type === "function_call_output" &&
     typeof value.output === "string"
@@ -98,6 +70,7 @@ function collectText(value: JsonValue, acc: string[]) {
       acc.push(trimmed);
     }
   }
+
   const nestedKeys = ["content", "item", "output", "response", "data"];
   for (const key of nestedKeys) {
     const nested = value[key];
@@ -113,13 +86,14 @@ function conversationIdFrom(payload: JsonValue): string | undefined {
   if (!isRecord(payload)) {
     return;
   }
-  const { conversation_id: directId, response } = payload;
-  const direct = asString(directId);
+
+  const direct = asString(payload.conversation_id);
   if (direct) {
     return direct;
   }
-  if (isRecord(response)) {
-    return asString(response.conversation_id);
+
+  if (isRecord(payload.response)) {
+    return asString(payload.response.conversation_id);
   }
 }
 
@@ -127,30 +101,39 @@ function isFailed(payload: JsonValue) {
   if (!isRecord(payload)) {
     return false;
   }
-  const { response, status } = payload;
-  if (status === "failed") {
+
+  if (payload.status === "failed") {
     return true;
   }
-  return isRecord(response) && response.status === "failed";
+
+  return isRecord(payload.response) && payload.response.status === "failed";
 }
 
 function errorMessage(payload: JsonValue) {
   if (!isRecord(payload)) {
-    return "Genie request failed.";
+    return "Placement Cell Genie request failed.";
   }
-  const { error, response } = payload;
-  if (isRecord(error)) {
-    return asString(error.message) ?? "Genie request failed.";
+
+  if (isRecord(payload.error)) {
+    return (
+      asString(payload.error.message) ?? "Placement Cell Genie request failed."
+    );
   }
-  if (isRecord(response) && isRecord(response.error)) {
-    return asString(response.error.message) ?? "Genie request failed.";
+
+  if (isRecord(payload.response) && isRecord(payload.response.error)) {
+    return (
+      asString(payload.response.error.message) ??
+      "Placement Cell Genie request failed."
+    );
   }
-  return "Genie request failed.";
+
+  return "Placement Cell Genie request failed.";
 }
 
 function parseSseBlock(block: string) {
   let eventName = "message";
   const dataLines: string[] = [];
+
   for (const line of block.split("\n")) {
     if (line.startsWith("event:")) {
       eventName = line.slice(6).trim();
@@ -160,9 +143,11 @@ function parseSseBlock(block: string) {
       dataLines.push(line.slice(5).trim());
     }
   }
+
   if (dataLines.length === 0) {
     return null;
   }
+
   return { data: dataLines.join("\n"), eventName };
 }
 
@@ -187,16 +172,20 @@ async function readChunk(
     if (!parsed) {
       continue;
     }
+
     let payload: JsonValue;
     try {
       payload = JSON.parse(parsed.data) as JsonValue;
     } catch {
       continue;
     }
+
     nextConversation = conversationIdFrom(payload) ?? nextConversation;
+
     if (parsed.eventName === "response.failed" || isFailed(payload)) {
       throw new Error(errorMessage(payload));
     }
+
     if (
       parsed.eventName === "response.completed" ||
       parsed.eventName === "response.output_item.done"
@@ -208,32 +197,32 @@ async function readChunk(
   if (done) {
     return { conversationId: nextConversation, texts: nextTexts };
   }
+
   return readChunk(reader, decoder, remainder, nextTexts, nextConversation);
 }
 
-export async function askGenieAgent({
+export async function askPlacementCellGenie({
   conversationKey,
   question,
-  studentContext,
 }: {
   conversationKey?: string;
   question: string;
-  studentContext: StudentContext;
-}) {
-  const config = workspaceHost();
+}): Promise<PlacementCellGenieResponse> {
+  const config = workspaceConfig();
   if (!config) {
-    throw new Error("Databricks Genie is not configured.");
+    throw new Error("Placement Cell Genie is not configured.");
   }
 
   const conversationId = conversationKey
-    ? conversationsByChat.get(conversationKey)
+    ? conversations.get(conversationKey)
     : undefined;
+
   const body: JsonObject = {
     input: [
       {
         content: [
           {
-            text: buildGeniePrompt(question, studentContext),
+            text: buildPlacementCellPrompt(question),
             type: "input_text",
           },
         ],
@@ -242,6 +231,7 @@ export async function askGenieAgent({
       },
     ],
   };
+
   if (conversationId) {
     body.conversation_id = conversationId;
   }
@@ -261,12 +251,12 @@ export async function askGenieAgent({
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(
-      `Genie Agent HTTP ${response.status}: ${detail.slice(0, 400)}`
+      `Placement Cell Genie HTTP ${response.status}: ${detail.slice(0, 400)}`
     );
   }
 
   if (!response.body) {
-    throw new Error("Genie Agent returned an empty stream.");
+    throw new Error("Placement Cell Genie returned an empty stream.");
   }
 
   const result = await readChunk(
@@ -278,13 +268,23 @@ export async function askGenieAgent({
   );
 
   if (conversationKey && result.conversationId) {
-    conversationsByChat.set(conversationKey, result.conversationId);
+    conversations.set(conversationKey, result.conversationId);
   }
 
   const unique = [...new Set(result.texts)];
   const answer = unique.join("\n\n").trim();
+
   if (!answer) {
-    throw new Error("Genie Agent completed without an answer.");
+    throw new Error("Placement Cell Genie completed without an answer.");
   }
-  return answer;
+
+  const parsed = parseAnalyticsAnswer(answer);
+
+  return {
+    answer: parsed.prose || answer,
+    conversationId: result.conversationId,
+    queryResults: parsed.queryResults,
+    status: "completed",
+    suggestedQuestions: parsed.suggestedQuestions,
+  };
 }

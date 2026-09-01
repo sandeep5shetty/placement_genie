@@ -64,7 +64,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 
   const handleNewChat = useCallback(() => {
     setOpenMobile(false);
-    router.push("/");
+    router.push("/chat");
   }, [router, setOpenMobile]);
 
   const handleOpenProfile = useCallback(() => {
@@ -78,7 +78,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 
   const handleDeleteAll = useCallback(() => {
     setShowDeleteAllDialog(false);
-    router.replace("/");
+    router.replace("/chat");
     mutate(unstable_serialize(getChatHistoryPaginationKey), [], {
       revalidate: false,
     });
@@ -102,7 +102,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                   className="size-8 !px-0 items-center justify-center overflow-visible group-data-[collapsible=icon]:group-hover/logo:opacity-0 [&>span:last-child]:overflow-visible"
                   tooltip="Ask Genie"
                 >
-                  <Link href="/" onClick={closeMobile}>
+                  <Link href="/chat" onClick={closeMobile}>
                     <GenieMark size={22} />
                   </Link>
                 </SidebarMenuButton>

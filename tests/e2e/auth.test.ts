@@ -35,3 +35,38 @@ test.describe("Authentication Pages", () => {
     await expect(page).toHaveURL("/login");
   });
 });
+
+test.describe("Landing page", () => {
+  test("shows student and placement cell CTAs", async ({ page }) => {
+    await page.goto("/");
+    await expect(
+      page.getByRole("heading", {
+        name: "Know if you are ready. Show the campus why.",
+      })
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Get started" }).first()
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Placement Cell" }).first()
+    ).toBeVisible();
+  });
+});
+
+test.describe("Placement Cell Portal", () => {
+  test("login page renders correctly", async ({ page }) => {
+    await page.goto("/placement-cell/login");
+    await expect(
+      page.getByRole("heading", { name: "Placement Cell" })
+    ).toBeVisible();
+    await expect(page.getByLabel("Access code")).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Enter dashboard" })
+    ).toBeVisible();
+  });
+
+  test("unauthenticated dashboard redirects to login", async ({ page }) => {
+    await page.goto("/placement-cell");
+    await expect(page).toHaveURL(/\/placement-cell\/login$/);
+  });
+});

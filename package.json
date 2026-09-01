@@ -16,7 +16,8 @@
     "db:pull": "drizzle-kit pull",
     "db:check": "drizzle-kit check",
     "db:up": "drizzle-kit up",
-    "test": "export PLAYWRIGHT=True && pnpm exec playwright test"
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test",
+    "test:unit": "pnpm exec tsx --test tests/unit/*.test.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.52",
@@ -75,6 +76,7 @@
     "react": "19.2.7",
     "react-data-grid": "7.0.0-beta.47",
     "react-dom": "19.2.7",
+    "recharts": "^3.10.1",
     "redis": "^6.1.0",
     "resumable-stream": "^2.2.12",
     "server-only": "^0.0.1",
